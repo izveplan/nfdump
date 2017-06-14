@@ -1589,6 +1589,20 @@ master_record_t *r = (master_record_t *)record;
  	        _s = data_string + _slen;
  	        slen = STRINGSIZE - _slen;
 
+	// Palo Alto Firewall
+	// App-ID
+	snprintf(_s, slen-1, ",%s", r->appid);
+		_slen = strlen(data_string);
+		_s = data_string + _slen;
+		slen = STRINGSIZE - _slen;
+	
+	// User-ID
+	snprintf(_s, slen-1, ",%s", r->userid);
+		_slen = strlen(data_string);
+		_s = data_string + _slen;
+		slen = STRINGSIZE - _slen;
+	// Palo Alto Firewall
+
 	// snprintf(_s, slen-1, "\n");
 	data_string[STRINGSIZE-1] = 0;
 	*s = data_string;
@@ -1635,7 +1649,7 @@ char *get_record_header(void) {
 
 void set_record_header(void) {
 
-	snprintf(header_string, STRINGSIZE-1, "ts,te,td,sa,da,sp,dp,pr,flg,fwd,stos,ipkt,ibyt,opkt,obyt,in,out,sas,das,smk,dmk,dtos,dir,nh,nhb,svln,dvln,ismc,odmc,idmc,osmc,mpls1,mpls2,mpls3,mpls4,mpls5,mpls6,mpls7,mpls8,mpls9,mpls10,cl,sl,al,ra,eng,exid,tr");
+	snprintf(header_string, STRINGSIZE-1, "ts,te,td,sa,da,sp,dp,pr,flg,fwd,stos,ipkt,ibyt,opkt,obyt,in,out,sas,das,smk,dmk,dtos,dir,nh,nhb,svln,dvln,ismc,odmc,idmc,osmc,mpls1,mpls2,mpls3,mpls4,mpls5,mpls6,mpls7,mpls8,mpls9,mpls10,cl,sl,al,ra,eng,exid,tr,appid,userid");
 	header_string[STRINGSIZE-1] = '\0';
 
 } // End of format_csv_header
