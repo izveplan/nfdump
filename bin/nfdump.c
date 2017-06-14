@@ -179,6 +179,11 @@ extern generic_exporter_t **exporter_list;
  * 	%pps	// pps - packets per second
  * 	%bpp	// bps - Bytes per package
  *
+ *
+ * Palo Alto Firewall
+ *  %appid	// App-ID
+ *  %userid	// User-ID
+ *
  * The nfdump standard output formats line, long and extended are defined as follows:
  */
 
@@ -311,6 +316,8 @@ static void usage(char *name) {
 					"\t\t csv      ',' separated, machine parseable output format.\n"
 					"\t\t pipe     '|' separated legacy machine parseable output format.\n"
 					"\t\t\tmode may be extended by '6' for full IPv6 listing. e.g.long6, extended6.\n"
+					"\t\t fmt      User-defined output format.\n"
+					"\t\t\texample: \"fmt:%%ts %%ibyt %%obyt\"\n"
 					"-E <file>\tPrint exporter ans sampling info for collected flows.\n"
 					"-v <file>\tverify netflow data file. Print version and blocks.\n"
 					"-x <file>\tverify extension records in netflow data file.\n"

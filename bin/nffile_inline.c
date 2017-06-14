@@ -353,8 +353,8 @@ void		*p = (void *)input_record;
 				output_record->appl_latency_usec = tpl->appl_latency_usec;
 				p = (void *)tpl->data;
 			} break;
-                        case EX_PAN_APPID: {
-                                tpl_ext_50_t *tpl = (tpl_ext_50_t *)p;
+            case EX_PAN_APPID: {
+                tpl_ext_50_t *tpl = (tpl_ext_50_t *)p;
 				strncpy((void *)output_record->appid, (void *)tpl->appid, sizeof(output_record->appid));
 				output_record->appid[sizeof(output_record->appid)-1] = '\0';	// safety 0
 				p = (void *)tpl->data;				
