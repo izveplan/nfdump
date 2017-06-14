@@ -155,6 +155,8 @@ static struct aggregate_info_s {
 	{ "tos",		{ 1, OffsetTos, 		MaskTos, 	 ShiftTos },   		-1, 0, 	"%tos"	},
 	{ "srctos",		{ 1, OffsetTos, 		MaskTos, 	 ShiftTos },   		-1, 0,	"%stos"	},
 	{ "dsttos",		{ 1, OffsetDstTos, 		MaskDstTos,  ShiftDstTos },   	-1, 0,	"%dtos"	},
+	{ "appid",		{ 32, OffsetAppID, 		0,	0 },   	-1, 0,	"%appid"	},
+	{ "userid",		{ 64, OffsetUserID, 	0,  0 },   	-1, 0,	"%userid"	},
 	{ NULL,			{ 0, 0, 0, 0}, 0, 0, NULL}
 };
 
@@ -866,8 +868,8 @@ master_record_t *aggr_record_mask;
 } // End of GetMasterAggregateMask
 
 static inline void New_Hash_Key(void *keymem, master_record_t *flow_record, int swap_flow) {
-uint64_t *record = (uint64_t *)flow_record;
-Default_key_t *keyptr;
+	uint64_t *record = (uint64_t *)flow_record;
+	Default_key_t *keyptr;
 
 	// apply src/dst mask bits if requested
 	if ( FlowTable.apply_netbits ) {
@@ -878,35 +880,48 @@ Default_key_t *keyptr;
 		// custom user aggregation
 		aggregate_param_t *aggr_param = aggregate_stack;
 		while ( aggr_param->size ) {
-			uint64_t val = (record[aggr_param->offset] & aggr_param->mask) >> aggr_param->shift;
-
-			switch ( aggr_param->size ) {
-				case 8: {
-					uint64_t *_v = (uint64_t *)keymem;
-					*_v = val;
-					keymem += sizeof(uint64_t);
-					} break;
-				case 4: {
-					uint32_t *_v = (uint32_t *)keymem;
-					*_v = val;
-					keymem += sizeof(uint32_t);
-					} break;
-				case 2: {
-					uint16_t *_v = (uint16_t *)keymem;
-					*_v = val;
-					keymem += sizeof(uint16_t);
-					} break;
-				case 1: {
+			if (aggr_param->size > 8) {
+				// Params, longer than 8 bytes, are handled as an array of bytes
+				uint8_t *valStart = &(record[aggr_param->offset]);
+				uint8_t length = aggr_param->size, i=0;
+				for (i=0; i != length; ++i) {
 					uint8_t *_v = (uint8_t *)keymem;
-					*_v = val;
+					*_v = valStart[i];
 					keymem += sizeof(uint8_t);
-					} break;
-				default:
-					fprintf(stderr, "Panic: Software error in %s line %d\n", __FILE__, __LINE__);
-					exit(255);
-			} // switch
+				}
+			}
+			else {
+				uint64_t val = (record[aggr_param->offset] & aggr_param->mask) >> aggr_param->shift;
+
+				switch ( aggr_param->size ) {
+					case 8: {
+						uint64_t *_v = (uint64_t *)keymem;
+						*_v = val;
+						keymem += sizeof(uint64_t);
+						} break;
+					case 4: {
+						uint32_t *_v = (uint32_t *)keymem;
+						*_v = val;
+						keymem += sizeof(uint32_t);
+						} break;
+					case 2: {
+						uint16_t *_v = (uint16_t *)keymem;
+						*_v = val;
+						keymem += sizeof(uint16_t);
+						} break;
+					case 1: {
+						uint8_t *_v = (uint8_t *)keymem;
+						*_v = val;
+						keymem += sizeof(uint8_t);
+						} break;
+					default:
+						fprintf(stderr, "Panic: Software error in %s line %d\n", __FILE__, __LINE__);
+						exit(255);
+				} // switch
+			}
+
 			aggr_param++;
-		} // while 
+		} // while
 	} else if ( swap_flow ) {
 		// default 5-tuple aggregation for bidirectional flows
 		keyptr = (Default_key_t *)keymem;
