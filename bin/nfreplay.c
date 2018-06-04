@@ -1,4 +1,5 @@
 /*
+ *  Copyright (c) 2018, 2017, 2016 Peter Haag
  *  Copyright (c) 2014, Peter Haag
  *  Copyright (c) 2009, Peter Haag
  *  Copyright (c) 2004-2008, SWITCH - Teleinformatikdienste fuer Lehre und Forschung
@@ -28,12 +29,6 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  *  POSSIBILITY OF SUCH DAMAGE.
  *  
- *  $Author: haag $
- *
- *  $Id: nfreplay.c 39 2009-11-25 08:11:15Z haag $
- *
- *  $LastChangedRevision: 39 $
- *	
  */
 
 #include "config.h"
@@ -67,7 +62,6 @@
 #include "nfdump.h"
 #include "nfnet.h"
 #include "bookkeeper.h"
-#include "nfxstat.h"
 #include "collector.h"
 #include "exporter.h"
 #include "netflow_v5_v7.h"
@@ -138,6 +132,7 @@ static void usage(char *name) {
 					"-b <bsize>\tSend buffer size.\n"
 					"-r <input>\tread from file. default: stdin\n"
 					"-f <filter>\tfilter syntaxfile\n"
+					"-v <version>\tUse netflow version to send flows. Either 5 or 9\n"
 					"-t <time>\ttime window for sending packets\n"
 					"\t\tyyyy/MM/dd.hh:mm:ss[-yyyy/MM/dd.hh:mm:ss]\n"
 					, name);

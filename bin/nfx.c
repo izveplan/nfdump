@@ -124,8 +124,8 @@ extension_descriptor_t extension_descriptor[] = {
 
 	{ EX_NSEL_RESERVED,		0,	0, 0,		NULL},
 
-	// nprobe extensions
-	{ EX_LATENCY,			24,	64, 0,		"nprobe latency"},
+	// latency extension for nfpcapd and nprobe
+	{ EX_LATENCY,			24,	64, 0,		"nprobe/nfpcapd latency"},
 
 	// NAT - Network Event Logging
 	{ EX_NEL_COMMON,		12,	31, 0,		"NEL Common block"},
@@ -133,6 +133,10 @@ extension_descriptor_t extension_descriptor[] = {
 	{ EX_PORT_BLOCK_ALLOC, 	8,	32, 0,    	"NAT Port Block Allocation"},
 	{ EX_NEL_RESERVED_1,	0,	0, 0,		NULL},
 
+        // Palo Alto Firewall
+        { EX_PAN_APPID,                   32,     65, 0,          "Palo Alto App-ID"},
+        { EX_PAN_USERID,                  64,     66, 0,          "Palo Alto User-ID"},
+        
 	// last entry
 	{ 0,	0,	0, 0,	NULL }
 };
@@ -542,6 +546,7 @@ int i, extension_size, max_elements;
 		int id = map->ex_id[i];
 		if ( id > Max_num_extensions ) {
 			printf("PANIC! - Verify map id %i: ERROR: element id %i out of range [%i]!\n", map->map_id, id, Max_num_extensions);
+			exit(255);
 		}
 		extension_size += extension_descriptor[id].size;
 		i++;
