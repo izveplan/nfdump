@@ -732,8 +732,8 @@ int		i;
 				tpl->bgpPrevAdjacentAS = master_record->bgpPrevAdjacentAS;
 				p = (void *)tpl->data;
 				} break;
-                        case EX_PAN_APPID: {
-                                tpl_ext_50_t *tpl = (tpl_ext_50_t *)p;
+			case EX_PAN_APPID: {
+					tpl_ext_50_t *tpl = (tpl_ext_50_t *)p;
 				strncpy((void *)tpl->appid, (void *)master_record->appid, sizeof(tpl->appid));
 				tpl->appid[sizeof(tpl->appid)-1] = '\0';	// safety 0
 				p = (void *)tpl->data;				
