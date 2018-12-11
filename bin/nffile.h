@@ -2128,13 +2128,17 @@ typedef struct master_record_s {
  * - the extension map must be updated accordingly
  */
 
+#define MaskText		0xFFFFFFFFFFFFFFFF
+#define ShiftText		0
+#define CharU64Factor		8
+
 #define OffsetAppID  (offsetof(master_record_t, appid) >> 3)
 	char appid[32];
 
 #define OffsetUserID  (offsetof(master_record_t, userid) >> 3)
 	char userid[64];
 
-        
+
 
 #ifdef USER_EXTENSION_1
 	uint64_t	u64_1;

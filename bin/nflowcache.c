@@ -159,8 +159,8 @@ static struct aggregate_info_s {
 	{ "tos",		{ 1, OffsetTos, 		MaskTos, 	 ShiftTos },   		-1, 0, 	"%tos"	},
 	{ "srctos",		{ 1, OffsetTos, 		MaskTos, 	 ShiftTos },   		-1, 0,	"%stos"	},
 	{ "dsttos",		{ 1, OffsetDstTos, 		MaskDstTos,  ShiftDstTos },   	-1, 0,	"%dtos"	},
-	{ "appid",		{ 32, OffsetAppID, 		0,	0 },   	-1, 0,	"%appid"	},
-	{ "userid",		{ 64, OffsetUserID, 	0,  0 },   	-1, 0,	"%userid"	},
+	{ "appid",		{ 32, OffsetAppID, 		MaskText,	 ShiftText },   	-1, 0,	"%appid"	},
+	{ "userid",		{ 64, OffsetUserID, 	MaskText,	 ShiftText },   	-1, 0,	"%userid"	},
 	{ NULL,			{ 0, 0, 0, 0}, 0, 0, NULL}
 };
 
@@ -850,7 +850,14 @@ master_record_t *aggr_record_mask;
 		memset((void *)aggr_record_mask, 0, sizeof(master_record_t));
 		while ( aggr_param->size ) {
 			int offset = aggr_param->offset;
-			r[offset] |= aggr_param->mask;
+			if (aggr_param->size > CharU64Factor) {
+				uint8_t length = aggr_param->size/CharU64Factor, i=0;
+				for (i=0; i != length; ++i) {
+					r[offset+i] |= aggr_param->mask;
+				}
+			} else {
+				r[offset] |= aggr_param->mask;
+			}
 			aggr_param++;
 		}
 
@@ -884,8 +891,8 @@ static inline void New_Hash_Key(void *keymem, master_record_t *flow_record, int 
 		// custom user aggregation
 		aggregate_param_t *aggr_param = aggregate_stack;
 		while ( aggr_param->size ) {
-			if (aggr_param->size > 8) {
-				// Params, longer than 8 bytes, are handled as an array of bytes
+			if (aggr_param->size > CharU64Factor) {
+				// Params, longer than 8 bytes (CharU64Factor), are handled as an array of bytes
 				uint8_t *valStart = &(record[aggr_param->offset]);
 				uint8_t length = aggr_param->size, i=0;
 				for (i=0; i != length; ++i) {
