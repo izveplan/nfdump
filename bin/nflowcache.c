@@ -454,7 +454,7 @@ uint32_t			index_cache;
 	if ( keymem == NULL ) {
 		keymem = MemoryHandle_get(&FlowTable.mem ,FlowTable.keysize );
 		// the last aligned word may not be fully used. set it to 0 to guarantee
-		// a proper comarison
+		// a proper comparison
 
 		// for 64 bit arch int == 8 bytes otherwise 4
 		((int *)keymem)[FlowTable.keylen-1] = 0;
@@ -499,7 +499,7 @@ uint32_t			index_cache;
 		FlowTableRecord->map_info_ref  	 	 = extension_info;
 		FlowTableRecord->exp_ref  	 		 = flow_record->exp_ref;
 
-		// keymen got part of the cache
+		// keymem got part of the cache
 		keymem = NULL;
 	} else {
 		// for bidir flows do

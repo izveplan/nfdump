@@ -1754,11 +1754,11 @@ char				*string;
 					memcpy((void *)&out[output_offset],(void *)&in[input_offset],65);
 					out[output_offset+65] = 0;	// trailing 0 for string
 					break;
-                                case move_appid_32:
+				case move_appid_32:
 					memcpy((void *)&out[output_offset],(void *)&in[input_offset],32);
 					out[output_offset+32] = 0;	// trailing 0 for string
 					break;
-                                case move_userid_64:
+				case move_userid_64:
 					memcpy((void *)&out[output_offset],(void *)&in[input_offset],64);
 					out[output_offset+64] = 0;	// trailing 0 for string
 					break;

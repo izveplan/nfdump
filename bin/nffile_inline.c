@@ -365,7 +365,7 @@ void		*p = (void *)input_record;
 			} break;
 			case EX_PAN_USERID: {
 				tpl_ext_51_t *tpl = (tpl_ext_51_t *)p;
-                                strncpy((void *)output_record->userid, (void *)tpl->userid, sizeof(output_record->userid));
+                strncpy((void *)output_record->userid, (void *)tpl->userid, sizeof(output_record->userid));
 				output_record->userid[sizeof(output_record->userid)-1] = '\0';	// safety 0
 				p = (void *)tpl->data;
 			} break;
