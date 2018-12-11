@@ -355,10 +355,10 @@ static struct v9_element_map_s {
 	{ NF9_NPROBE_SERVER_NW_DELAY_SEC, 	 "NPROBE server lat sec",	_4bytes, _8bytes, move_slatency, nop, EX_LATENCY },
 	{ NF9_NPROBE_APPL_LATENCY_SEC, 	 	 "NPROBE appl lat sec",		_4bytes, _8bytes, move_slatency, nop, EX_LATENCY },
 
-        // Palo Alto Firewall Extension
-        { NF9_PAN_APPID,    "Palo Alto Firewall App-ID",    _32bytes, _32bytes, move_appid_32, zero32, EX_PAN_APPID },
-        { NF9_PAN_USERID,    "Palo Alto Firewall User-ID",    _64bytes, _64bytes, move_userid_64, zero32, EX_PAN_USERID },
-        
+	// Palo Alto Firewall Extension
+	{ NF9_PAN_APPID,    "Palo Alto Firewall App-ID",    _32bytes, _32bytes, move_appid_32, zero32, EX_PAN_APPID },
+	{ NF9_PAN_USERID,    "Palo Alto Firewall User-ID",    _64bytes, _64bytes, move_userid_64, zero32, EX_PAN_USERID },
+
 	{0, "NULL",	0, 0}
 };
 
@@ -1048,10 +1048,10 @@ size_t				size_required;
 			case EX_NSEL_USER_MAX:
 				PushSequence( table, NF_F_USERNAME, &offset, NULL, 0);
 				break;
-                        case EX_PAN_APPID:
+			case EX_PAN_APPID:
 				PushSequence( table, NF9_PAN_APPID, &offset, NULL, 0);
 				break;
-                        case EX_PAN_USERID:
+			case EX_PAN_USERID:
 				PushSequence( table, NF9_PAN_USERID, &offset, NULL, 0);
 				break;
 			case EX_NEL_COMMON:
